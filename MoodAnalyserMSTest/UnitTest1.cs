@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoodAnalyzer;
 
+
 namespace MoodAnalyzer
 {
     [TestClass]
@@ -71,18 +72,20 @@ namespace MoodAnalyzer
                 Assert.AreEqual("Mood Should Not Be Null", e.Message);
             }
         }
-        /// <summary>
-        /// Tc 4.1 Mood Analyser Obj Should Return MoodAnalyser Object
-        /// </summary>
         [TestMethod]
         public void GivenMoodAnalyseClassName_ShouldReturnMoodAnalyseObject()
         {
             string message = null;
-            object expected = new MoodAnalyserFactory(message);
+            object expected = new MoodAnalyser(message);
             object obj = MoodAnalyserFactory.CreateMoodAnalyser("MoodAnalyzer.MoodAnalyser", "MoodAnalyser");
             expected.Equals(obj);
         }
-
-
+        [TestMethod]
+        public void GivenMoodAnalyseClassName_ShouldReturnMoodAnalyseObject_UsingParameterizedConstructor()
+        {
+            object expected = new MoodAnalyser("HAPPY");
+            object obj = MoodAnalyserFactory.CreateMoodAnalyseUsingParameterizedConstructor("MoodAnalyzer.MoodAnalyser", "MoodAnalyser", "HAPPY");
+            expected.Equals(obj);
+        }
     }
 }
