@@ -6,8 +6,7 @@ namespace MoodAnalyzer
 {
     public class MoodAnalyser
     {
-        public MoodAnalyser() { }
-        public string message;
+        private string message;
 
         public MoodAnalyser(string message)
         {
@@ -15,27 +14,16 @@ namespace MoodAnalyzer
         }
         public string AnalyseMood()
         {
-            try
-            {
-                if (this.message.Equals(string.Empty))
-                {
-                    throw new MoodAnalyserCustomException(MoodAnalyserCustomException.ExceptionType.EMPTY_MESSAGE, "Mood Should Not Be Empty");
-                }
 
-                if (this.message.Contains("Sad"))
-                {
-                    return "SAD";
-                }
-                else
-                {
-                    return "HAPPY";
-                }
-            }
-            catch (NullReferenceException)
+            if (this.message.Contains("Sad"))
             {
-                throw new MoodAnalyserCustomException(MoodAnalyserCustomException.ExceptionType.NULL_MESSAGE, "Mood Should Not Be Null");
+                return "SAD";
             }
-
+            else
+            {
+                return "HAPPY";
+            }
         }
+
     }
 }
