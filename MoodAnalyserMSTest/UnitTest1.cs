@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MoodAnalyzer;
 
 namespace MoodAnalyzer
+
 {
     [TestClass]
     public class UnitTest1
@@ -36,6 +37,40 @@ namespace MoodAnalyzer
 
             //Assert
             Assert.AreEqual(expected, mood);
+        }
+        /// <summary>
+        /// TC3.2: Given_Empty_Mood_Should_Throw_MoodAnalysisException_Indication_EmptyMood.
+        /// </summary>
+        [TestMethod]
+        public void Given_Empty_Mood_Should_Throw_MoodAnalysisException_Indication_EmptyMood()
+        {
+            try
+            {
+                string message = "";
+                MoodAnalyser moodAnalyser = new MoodAnalyser(message);
+                string mood = moodAnalyser.AnalyseMood();
+            }
+            catch (MoodAnalyserCustomException e)
+            {
+                Assert.AreEqual("Mood Should Not Be Empty", e.Message);
+            }
+        }
+        /// <summary>
+        /// TC3.1: Given Null Mood Should Throw MoodAnalysisException.
+        /// </summary>
+        [TestMethod]
+        public void Given_Null_Mood_Should_Throw_MoodanalysisException()
+        {
+            try
+            {
+                string message = null;
+                MoodAnalyser moodAnalyser = new MoodAnalyser(message);
+                string mood = moodAnalyser.AnalyseMood();
+            }
+            catch (MoodAnalyserCustomException e)
+            {
+                Assert.AreEqual("Mood Should Not Be Null", e.Message);
+            }
         }
     }
 }
