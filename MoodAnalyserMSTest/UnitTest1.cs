@@ -1,76 +1,48 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MoodAnalyzer;
+using MoodAnalyserUsingReflection;
+using System;
+using System.Reflection;
 
-namespace MoodAnalyzer
-
+namespace MoodAnalyseMsTest
 {
     [TestClass]
     public class UnitTest1
     {
         [TestMethod]
-        public void GivenSadMoodShouldReturnSAD()
+        public void GiveClassNameAndReturnObjectUsingParameters()
         {
-            //Arrange
-            string expected = "SAD";
-            string message = "I am in Sad Mood";
-            //Act
-            MoodAnalyser moodAnalyser = new MoodAnalyser(message);
-            string mood = moodAnalyser.AnalyseMood();
-            //Assert
-            Assert.AreEqual(expected, mood);
+            ///string message = null;
+            object expected = new Mood("Happy");
+            object obj = MoodAnalyser.CreateMoodAnalyseUsingParameters("MoodAnalyserUsingReflection.Mood", "Mood", "Happy");
+            expected.Equals(obj);
+            //Assert.Equals(expected, obj);
         }
-        /// <summary>
-        /// TC 1.1 & 2.1
-        /// </summary>
-        /// <param name="message"></param>
-        [TestMethod]
-        [DataRow("I am in HAPPY Mood")]
-        [DataRow(null)]
-        public void GivenHAPPYMoodShouldReturnHappy(string message)
-        {
-            //Arrange
-            string expected = "HAPPY";
-            MoodAnalyser moodAnalyser = new MoodAnalyser(message);
 
-            //Act
-            string mood = moodAnalyser.AnalyseMood();
 
-            //Assert
-            Assert.AreEqual(expected, mood);
-        }
-        /// <summary>
-        /// TC3.2: Given_Empty_Mood_Should_Throw_MoodAnalysisException_Indication_EmptyMood.
-        /// </summary>
+
+
+
         [TestMethod]
-        public void Given_Empty_Mood_Should_Throw_MoodAnalysisException_Indication_EmptyMood()
+        ///[TestCategory("InvokeMethodReflection")]
+        public void GiveInvokeMethod()
         {
+
+            string actual;
+            string message = "I am in a Happy mood";
+            string methodName = "AnalyseMood";
+            string expected = "Happy";
+
+
             try
             {
-                string message = "";
-                MoodAnalyser moodAnalyser = new MoodAnalyser(message);
-                string mood = moodAnalyser.AnalyseMood();
+                MoodAnalyser ma = new MoodAnalyser();
+                actual = ma.InvokeMethod(methodName, message);
             }
-            catch (MoodAnalyserCustomException e)
+            catch (CustomAnalyse e)
             {
-                Assert.AreEqual("Mood Should Not Be Empty", e.Message);
+                throw new Exception(e.Message);
             }
-        }
-        /// <summary>
-        /// TC3.1: Given Null Mood Should Throw MoodAnalysisException.
-        /// </summary>
-        [TestMethod]
-        public void Given_Null_Mood_Should_Throw_MoodanalysisException()
-        {
-            try
-            {
-                string message = null;
-                MoodAnalyser moodAnalyser = new MoodAnalyser(message);
-                string mood = moodAnalyser.AnalyseMood();
-            }
-            catch (MoodAnalyserCustomException e)
-            {
-                Assert.AreEqual("Mood Should Not Be Null", e.Message);
-            }
+            Assert.AreEqual(expected, actual);
         }
     }
 }

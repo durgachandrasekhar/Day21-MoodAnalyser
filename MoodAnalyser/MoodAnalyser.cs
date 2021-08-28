@@ -1,38 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Reflection;
+using System.Text.RegularExpressions;
 
-namespace MoodAnalyzer
+namespace MoodAnalyserUsingReflection
 {
     public class MoodAnalyser
     {
-        private string message;
-
-        public MoodAnalyser(string message)
+        public static object CreateMoodAnalyseUsingParameters(string className, string constructorName, string message)
         {
-            this.message = message;
-        }
-        public string AnalyseMood()
-        {
-            try
+            Type type = typeof(Mood);
+            if (type.Name.Equals(className) || type.FullName.Equals(className))
             {
-                if (this.message.Equals(string.Empty))
+                if (type.Name.Equals(constructorName))
                 {
-                    throw new MoodAnalyserCustomException(MoodAnalyserCustomException.ExceptionType.EMPTY_MESSAGE, "Mood Should Not Be Empty");
-                }
-
-                if (this.message.Contains("Sad"))
-                {
-                    return "SAD";
+                    ConstructorInfo constructor = type.GetConstructor(new[] { typeof(string) });
+                    object instance = constructor.Invoke(new object[] { "Happy" });
+                    return instance;
                 }
                 else
                 {
-                    return "HAPPY";
+                    throw new CustomAnalyse(CustomAnalyse.ExceptionType.NO_SUCH_METHOD, "Constructor not found");
                 }
             }
-            catch (NullReferenceException)
+            else
             {
-                throw new MoodAnalyserCustomException(MoodAnalyserCustomException.ExceptionType.NULL_MESSAGE, "Mood Should Not Be Null");
+                throw new CustomAnalyse(CustomAnalyse.ExceptionType.NO_SUCH_CLASS, "Class not found");
+            }
+        }
+        public string InvokeMethod(string methodName, string message)
+        {
+            try
+            {
+                Type type = typeof(Mood);
+                MethodInfo method = type.GetMethod(methodName);
+
+                object MoodAnalayserObject = MoodAnalyser.CreateMoodAnalyseUsingParameters("Mood", "Mood", "Happy");
+                object MethodObject = method.Invoke(MoodAnalayserObject, null);
+                return MethodObject.ToString();
+            }
+            catch (NullReferenceException e)
+            {
+                throw new CustomAnalyse(CustomAnalyse.ExceptionType.NO_SUCH_METHOD, "No such Method");
             }
         }
     }

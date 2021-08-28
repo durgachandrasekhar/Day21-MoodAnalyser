@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace MoodAnalyser
+namespace MoodAnlyzerReflection
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Mood Analyzer Problem");
+            Console.WriteLine("MoodAnlyzer Using Reflection");
         }
     }
 }
